@@ -1,16 +1,10 @@
-cmake_minimum_required(VERSION 3.27)
-project(untitled1 C)
+cmake_minimum_required(VERSION 3.22)
+project(RoverRun C)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 99)
 
-add_executable(untitled1 main.c
-        loc.c
-        loc.h
-        moves.c
-        moves.h
-        map.c
-        map.h
-        queue.c
-        queue.h
-        stack.c
-        stack.h)
+file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c")
+
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
+
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)

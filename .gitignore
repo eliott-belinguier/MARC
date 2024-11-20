@@ -1,0 +1,16 @@
+# Ignore all files and directories related to the IntelliJ IDEA project settings.
+# These files are specific to your development environment and are not needed by other developers.
+# Sharing these files can also cause conflicts if team members use different configurations.
+.idea/
+
+# Ignore all directories starting with "cmake-build-".
+# These are typically auto-generated build directories created by CMake.
+# They often contain compiled binaries, temporary files, and build artifacts
+# that should not be tracked in the repository.
+cmake-build-*/
+
+# Ignore all object files with the ".o" extension.
+# These files are intermediate compilation outputs produced by compilers like GCC.
+# Object files are not source code and can be regenerated during the build process,
+# so tracking them in version control is unnecessary and can bloat the repository.
+**.o
