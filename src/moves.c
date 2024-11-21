@@ -13,7 +13,7 @@
  * @param move : the move to do
  * @return the new orientation of the robot
  */
-t_orientation rotate(t_orientation, t_move );
+orientation_e rotate(orientation_e, t_move );
 
 /**
  * @brief function to translate the robot according to a move and its actual position
@@ -21,11 +21,11 @@ t_orientation rotate(t_orientation, t_move );
  * @param move : the move to do
  * @return the new localisation of the robot
  */
-t_localisation translate(t_localisation , t_move);
+localisation_s translate(localisation_s , t_move);
 
 /* definition of local functions */
 
-t_orientation rotate(t_orientation ori, t_move move)
+orientation_e rotate(orientation_e ori, t_move move)
 {
     int rst;
     switch (move)
@@ -45,14 +45,14 @@ t_orientation rotate(t_orientation ori, t_move move)
     return (ori+rst)%4;
 }
 
-t_localisation translate(t_localisation loc, t_move move)
+localisation_s translate(localisation_s loc, t_move move)
 {
     /** rules for coordinates:
      *  - x grows to the right with step of +1
      *  - y grows to the bottom with step of +1
      *  - the origin (x=0, y=0) is at the top left corner
      */
-    t_position res = loc.pos;
+    position_s res = loc.pos;
     switch (move) {
         case F_10:
             switch (loc.ori) {
@@ -129,7 +129,7 @@ t_localisation translate(t_localisation loc, t_move move)
         default:
             break;
     }
-        return loc_init(res.x, res.y, loc.ori);
+        return LOCALISATION_INIT(res.x, res.y, loc.ori);
 
 }
 
@@ -140,15 +140,15 @@ char *getMoveAsString(t_move move)
     return _moves[move];
 }
 
-t_localisation move(t_localisation loc, t_move move)
+localisation_s move(localisation_s loc, t_move move)
 {
-    t_localisation new_loc;
+    localisation_s new_loc;
     new_loc.ori = rotate(loc.ori, move);
     new_loc = translate(loc, move);
     return new_loc;
 }
 
-void updateLocalisation(t_localisation *p_loc, t_move m)
+void updateLocalisation(localisation_s *p_loc, t_move m)
 {
     *p_loc = move(*p_loc, m);
     return;

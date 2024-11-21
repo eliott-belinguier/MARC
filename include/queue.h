@@ -10,7 +10,7 @@
  */
 typedef struct s_queue
 {
-    t_position *values;
+    position_s *values;
     int size;
     int last;
     int first;
@@ -29,13 +29,13 @@ t_queue createQueue(int);
  * @param value : the position to enqueue
  * @return none
  */
-void enqueue(t_queue *,t_position);
+void enqueue(t_queue *,position_s);
 
 /**
  * @brief Function to dequeue a value from the queue
  * @param p_queue : pointer to the queue
  * @return the value dequeued
  */
-t_position dequeue(t_queue *);
+position_s dequeue(t_queue *);
 
 #endif //UNTITLED1_QUEUE_H

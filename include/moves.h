@@ -40,7 +40,7 @@ char *getMoveAsString(t_move move);
  * @param move : the move to do
  * @return the new localisation of the robot
  */
-t_localisation move(t_localisation, t_move);
+localisation_s move(localisation_s, t_move);
 
 /**
  * @brief wrapper function to update a single location
@@ -48,6 +48,6 @@ t_localisation move(t_localisation, t_move);
  * @param move : the move to do
  * @return none
  */
-void updateLocalisation(t_localisation *, t_move);
+void updateLocalisation(localisation_s *, t_move);
 
 #endif //UNTITLED1_MOVES_H

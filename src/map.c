@@ -17,7 +17,7 @@
  * @param map : the map
  * @return : the position of the base station
  */
-t_position getBaseStationPosition(t_map);
+position_s getBaseStationPosition(t_map);
 
 /**
  * @brief : function to calculate costs of the map  from the base station
@@ -35,9 +35,9 @@ void removeFalseCrevasses(t_map);
 
 /* definition of local functions */
 
-t_position getBaseStationPosition(t_map map)
+position_s getBaseStationPosition(t_map map)
 {
-    t_position pos;
+    position_s pos;
     int i = 0;
     int found = 0;
     while (i < map.y_max && !found)
@@ -89,28 +89,28 @@ void removeFalseCrevasses(t_map map)
         if (imin < map.y_max && jmin < map.x_max)
         {
             // step 2 : calculate the costs of the neighbours of the position
-            t_position pos;
+            position_s pos;
             pos.x = jmin;
             pos.y = imin;
-            t_position lp, rp, up, dp;
+            position_s lp, rp, up, dp;
             lp = LEFT(pos);
             rp = RIGHT(pos);
             up = UP(pos);
             dp = DOWN(pos);
             int min_neighbour = COST_UNDEF;
-            if (isValidLocalisation(lp, map.x_max, map.y_max))
+            if (POSITION_IS_VALID(lp, map.x_max, map.y_max))
             {
                 min_neighbour = (map.costs[lp.y][lp.x] < min_neighbour) ? map.costs[lp.y][lp.x] : min_neighbour;
             }
-            if (isValidLocalisation(rp, map.x_max, map.y_max))
+            if (POSITION_IS_VALID(rp, map.x_max, map.y_max))
             {
                 min_neighbour = (map.costs[rp.y][rp.x] < min_neighbour) ? map.costs[rp.y][rp.x] : min_neighbour;
             }
-            if (isValidLocalisation(up, map.x_max, map.y_max))
+            if (POSITION_IS_VALID(up, map.x_max, map.y_max))
             {
                 min_neighbour = (map.costs[up.y][up.x] < min_neighbour) ? map.costs[up.y][up.x] : min_neighbour;
             }
-            if (isValidLocalisation(dp, map.x_max, map.y_max))
+            if (POSITION_IS_VALID(dp, map.x_max, map.y_max))
             {
                 min_neighbour = (map.costs[dp.y][dp.x] < min_neighbour) ? map.costs[dp.y][dp.x] : min_neighbour;
             }
@@ -126,7 +126,7 @@ void removeFalseCrevasses(t_map map)
 
 void calculateCosts(t_map map)
 {
-    t_position baseStation = getBaseStationPosition(map);
+    position_s baseStation = getBaseStationPosition(map);
     //create a queue to store the positions to visit
     t_queue queue = createQueue(map.x_max * map.y_max);
     //enqueue the base station
@@ -135,53 +135,53 @@ void calculateCosts(t_map map)
     while (queue.first != queue.last)
     {
         // dequeue the position
-        t_position pos = dequeue(&queue);
+        position_s pos = dequeue(&queue);
         // get its self cost
         int self_cost = _soil_cost[map.soils[pos.y][pos.x]];
         // get ts neighbours
-        t_position lp, rp, up, dp;
+        position_s lp, rp, up, dp;
         lp = LEFT(pos);
         rp = RIGHT(pos);
         up = UP(pos);
         dp = DOWN(pos);
         // get the mimimum cost of the neighbours
         int min_cost = COST_UNDEF;
-        if (isValidLocalisation(lp, map.x_max, map.y_max))
+        if (POSITION_IS_VALID(lp, map.x_max, map.y_max))
         {
             min_cost = (map.costs[lp.y][lp.x] < min_cost) ? map.costs[lp.y][lp.x] : min_cost;
         }
-        if (isValidLocalisation(rp, map.x_max, map.y_max))
+        if (POSITION_IS_VALID(rp, map.x_max, map.y_max))
         {
             min_cost = (map.costs[rp.y][rp.x] < min_cost) ? map.costs[rp.y][rp.x] : min_cost;
         }
-        if (isValidLocalisation(up, map.x_max, map.y_max))
+        if (POSITION_IS_VALID(up, map.x_max, map.y_max))
         {
             min_cost = (map.costs[up.y][up.x] < min_cost) ? map.costs[up.y][up.x] : min_cost;
         }
-        if (isValidLocalisation(dp, map.x_max, map.y_max))
+        if (POSITION_IS_VALID(dp, map.x_max, map.y_max))
         {
             min_cost = (map.costs[dp.y][dp.x] < min_cost) ? map.costs[dp.y][dp.x] : min_cost;
         }
         // the cost of the current position is the minimum cost of the neighbours + 1 or 0 if the soil is a base station
         map.costs[pos.y][pos.x] = (map.soils[pos.y][pos.x] == BASE_STATION) ? 0 : min_cost + self_cost;
         // enqueue the neighbours if they are not visited yet
-        if (isValidLocalisation(lp, map.x_max, map.y_max) && map.costs[lp.y][lp.x] == COST_UNDEF)
+        if (POSITION_IS_VALID(lp, map.x_max, map.y_max) && map.costs[lp.y][lp.x] == COST_UNDEF)
         {
             // mark as visited - change the cost to 65534
             map.costs[lp.y][lp.x] = COST_UNDEF-1;
             enqueue(&queue, lp);
         }
-        if (isValidLocalisation(rp, map.x_max, map.y_max) && map.costs[rp.y][rp.x] == COST_UNDEF)
+        if (POSITION_IS_VALID(rp, map.x_max, map.y_max) && map.costs[rp.y][rp.x] == COST_UNDEF)
         {
             map.costs[rp.y][rp.x] = COST_UNDEF-1;
             enqueue(&queue, rp);
         }
-        if (isValidLocalisation(up, map.x_max, map.y_max) && map.costs[up.y][up.x] == COST_UNDEF)
+        if (POSITION_IS_VALID(up, map.x_max, map.y_max) && map.costs[up.y][up.x] == COST_UNDEF)
         {
             map.costs[up.y][up.x] = COST_UNDEF-1;
             enqueue(&queue, up);
         }
-        if (isValidLocalisation(dp, map.x_max, map.y_max) && map.costs[dp.y][dp.x] == COST_UNDEF)
+        if (POSITION_IS_VALID(dp, map.x_max, map.y_max) && map.costs[dp.y][dp.x] == COST_UNDEF)
         {
             map.costs[dp.y][dp.x] = COST_UNDEF-1;
             enqueue(&queue, dp);
